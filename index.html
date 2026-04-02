@@ -2,154 +2,95 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>後慈湖｜志工離園人數控管</title>
 
 <style>
-body {
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #f0f2f5;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.container {
-  background: #fff;
-  width: 95%;
-  max-width: 420px;
-  padding: 30px 20px;
-  border-radius: 20px;
-  text-align: center;
-  border-top: 12px solid #ff4d4f;
-  box-shadow: 0 10px 25px rgba(0,0,0,.15);
-}
-
-h1 {
-  margin: 0 0 10px;
-}
-
-#count {
-  font-size: 120px;
-  font-weight: bold;
-  color: #ff4d4f;
-  margin: 20px 0;
-}
-
-.label {
-  color: #555;
-  font-size: 20px;
-}
-
-.control {
-  display: flex;
-  gap: 20px;
-  margin: 25px 0;
-}
-
-.control button {
-  flex: 1;
-  height: 110px;
-  font-size: 56px;
-  font-weight: bold;
-  border: none;
-  border-radius: 20px;
-  color: white;
-  cursor: pointer;
-}
-
-.minus {
-  background: #999;
-}
-
-.plus {
-  background: #52c41a;
-}
-
-input {
-  width: 100%;
-  font-size: 36px;
-  padding: 18px;
-  text-align: center;
-  border-radius: 16px;
-  border: 3px solid #ffaaa5;
-  margin-bottom: 20px;
-}
-
-.submit {
-  width: 100%;
-  font-size: 34px;
-  padding: 26px;
-  border-radius: 20px;
-  background: #ff4d4f;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.note {
-  margin-top: 12px;
-  font-size: 14px;
-  color: #999;
-}
+  body { font-family: -apple-system, system-ui, sans-serif; background: #f0f2f5; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+  .container { background: #fff; width: 92%; max-width: 420px; padding: 25px 20px; border-radius: 24px; text-align: center; border-top: 12px solid #ff4d4f; box-shadow: 0 15px 35px rgba(0,0,0,.1); }
+  h1 { margin: 0 0 5px; font-size: 24px; color: #333; }
+  #count { font-size: 110px; font-weight: 900; color: #ff4d4f; margin: 10px 0; line-height: 1; }
+  .label { color: #888; font-size: 18px; }
+  .control { display: flex; gap: 15px; margin: 20px 0; }
+  .control button { flex: 1; height: 100px; font-size: 40px; font-weight: bold; border: none; border-radius: 18px; color: white; cursor: pointer; transition: transform 0.1s; }
+  .control button:active { transform: scale(0.95); opacity: 0.8; }
+  .btn-plus-1 { background: #ffa940; } /* 橘色 +1 */
+  .btn-plus-5 { background: #52c41a; } /* 綠色 +5 */
+  input { width: 100%; font-size: 28px; padding: 15px; text-align: center; border-radius: 12px; border: 2px solid #eee; margin-bottom: 15px; box-sizing: border-box; }
+  .submit { width: 100%; font-size: 28px; padding: 20px; border-radius: 18px; background: #ff4d4f; color: white; border: none; font-weight: bold; box-shadow: 0 4px 0 #cf1322; }
+  .submit:active { transform: translateY(4px); box-shadow: none; }
+  .submit:disabled { background: #ccc; box-shadow: none; }
+  .note { margin-top: 15px; font-size: 13px; color: #bbb; }
 </style>
 </head>
 
 <body>
 <div class="container">
   <h1>離園人數</h1>
-  <div class="label">目前累積</div>
-
-  <div id="count">0</div>
+  <div class="label">今日累計</div>
+  <div id="count">...</div>
   <div class="label">位遊客已離園</div>
 
-  <input
-    type="number"
-    inputmode="numeric"
-    placeholder="直接輸入離園人數"
-    onchange="sendByInput(this)"
-  >
-
-  <div class="control">
-    <button class="minus" onclick="sendDelta(1)">− 1</button>
-    <button class="plus" onclick="sendDelta(5)">＋ 5</button>
+  <div style="margin-top: 20px;">
+    <input type="number" inputmode="numeric" id="manualInput" placeholder="輸入數字後按送出">
   </div>
 
-  <button class="submit" onclick="sendDelta(1)">確認送出 +1</button>
+  <div class="control">
+    <button class="btn-plus-1" onclick="sendDelta(1)">+ 1</button>
+    <button class="btn-plus-5" onclick="sendDelta(5)">+ 5</button>
+  </div>
 
-  <div class="note">所有操作即時同步至人流總帳</div>
+  <button class="submit" id="mainBtn" onclick="handleManual()">送出輸入人數</button>
+
+  <div class="note">數據將同步至長官的後慈湖總帳</div>
 </div>
 
 <script>
-/* ===============================
-   後慈湖 Out 網站（正式上線版）
-   - 只送 delta（增量）
-   - Google Sheets 為唯一權威
-   =============================== */
-
-/* ▶▶▶ 換成你自己的 GAS 網址 ▶▶▶ */
-const GAS_URL = "https://-script.google.com/macros/s/AKfycbw5VQi-dtLodRQbKTgzueGGXgMBBedA_Th93Skr_Dia3-JYbxtd00shnZ24axbznDY/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbw5VQi-dtLodRQbKTgzueGGXgMBBedA_Th93Skr_Dia3-JYbxtd00shnZ24axbznDY/exec";
 
 let currentOut = 0;
+let isSending = false;
 
-/* ✅ 頁面載入：取得目前離園總數 */
-window.addEventListener("load", async () => {
+// 初始化：讀取最新人數
+async function fetchCurrent() {
   try {
     const res = await fetch(GAS_URL);
     const data = await res.json();
-    currentOut = Number(data.out || 0);
-    document.getElementById("count").innerText = currentOut;
+    updateDisplay(data.out);
   } catch (err) {
-    alert("❌ 無法連線人流總帳，請確認網路");
+    document.getElementById("count").innerText = "ERR";
   }
-});
+}
 
-/* ✅ 核心：只送『這次變多少』 */
+function updateDisplay(val) {
+  currentOut = Number(val || 0);
+  document.getElementById("count").innerText = currentOut;
+}
+
+// 處理手動輸入框的送出
+function handleManual() {
+  const inputEl = document.getElementById("manualInput");
+  const val = parseInt(inputEl.value);
+  if (isNaN(val) || val <= 0) {
+    alert("請輸入正確的人數");
+    return;
+  }
+  sendDelta(val);
+  inputEl.value = "";
+  inputEl.blur(); // 收起鍵盤
+}
+
+// 核心傳送邏輯
 async function sendDelta(delta) {
-  if (!Number.isInteger(delta) || delta <= 0) return;
-  if (!confirm(`送出 ${delta} 人離園？`)) return;
+  if (isSending) return;
+  if (!confirm(`確認回報 ${delta} 位遊客離園？`)) return;
+
+  const btn = document.getElementById("mainBtn");
+  isSending = true;
+  btn.disabled = true;
+  btn.innerText = "同步中...";
+
+  if (navigator.vibrate) navigator.vibrate(50); // 震動回饋
 
   try {
     const res = await fetch(GAS_URL, {
@@ -157,27 +98,23 @@ async function sendDelta(delta) {
       body: JSON.stringify({
         type: "OUT",
         delta: delta,
-        source: "MANUAL"
+        source: "VOLUNTEER_APP"
       })
     });
 
     const data = await res.json();
-    currentOut = Number(data.out || currentOut);
-    document.getElementById("count").innerText = currentOut;
-
+    updateDisplay(data.out);
+    
   } catch (err) {
-    alert("❌ 傳送失敗，請確認網路");
+    alert("❌ 傳送失敗，請檢查網路連線");
+  } finally {
+    isSending = false;
+    btn.disabled = false;
+    btn.innerText = "送出輸入人數";
   }
 }
 
-/* ✅ 手機數字鍵盤輸入 */
-function sendByInput(el) {
-  const val = Number(el.value);
-  if (val > 0) {
-    sendDelta(val);
-    el.value = "";
-  }
-}
+window.addEventListener("load", fetchCurrent);
 </script>
 </body>
 </html>
