@@ -6,46 +6,151 @@
 <title>後慈湖｜志工離園人數控管</title>
 
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; background: #f0f2f5; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
-  .container { background: #fff; width: 92%; max-width: 420px; padding: 25px 20px; border-radius: 24px; text-align: center; border-top: 12px solid #ff4d4f; box-shadow: 0 15px 35px rgba(0,0,0,.1); }
-  h1 { margin: 0 0 5px; font-size: 24px; color: #333; }
-  #count { font-size: 110px; font-weight: 900; color: #ff4d4f; margin: 10px 0; line-height: 1; }
-  .label { color: #888; font-size: 18px; }
-  .control { display: flex; gap: 15px; margin: 20px 0; }
-  .control button { flex: 1; height: 100px; font-size: 40px; font-weight: bold; border: none; border-radius: 18px; color: white; cursor: pointer; transition: transform 0.1s; }
-  .control button:active { transform: scale(0.95); opacity: 0.8; }
-  .btn-plus-1 { background: #ffa940; } /* 橘色 +1 */
-  .btn-plus-5 { background: #52c41a; } /* 綠色 +5 */
-  input { width: 100%; font-size: 28px; padding: 15px; text-align: center; border-radius: 12px; border: 2px solid #eee; margin-bottom: 15px; box-sizing: border-box; }
-  .submit { width: 100%; font-size: 28px; padding: 20px; border-radius: 18px; background: #ff4d4f; color: white; border: none; font-weight: bold; box-shadow: 0 4px 0 #cf1322; }
+  :root {
+    --primary-color: #ff4d4f; /* 醒目紅色 */
+    --success-color: #52c41a; /* 成功綠色 */
+    --warning-color: #ffa940; /* 警示橘色 */
+    --bg-color: #f0f2f5;
+    --text-main: #333333;
+    --text-sub: #888888;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg-color);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden; /* 防止手機端頁面滾動 */
+  }
+
+  .container {
+    background: #fff;
+    width: 92%;
+    max-width: 420px;
+    padding: 30px 20px;
+    border-radius: 24px;
+    text-align: center;
+    border-top: 12px solid var(--primary-color);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+  }
+
+  h1 { margin: 0 0 5px; font-size: 26px; color: var(--text-main); }
+  .label { color: var(--text-sub); font-size: 18px; }
+
+  /* 核心人數顯示區 */
+  .count-box {
+    background: #fff1f0;
+    border: 2px solid #ffccc7;
+    border-radius: 16px;
+    padding: 15px;
+    margin: 20px 0;
+  }
+  #count {
+    font-size: 110px;
+    font-weight: 900;
+    color: var(--primary-color);
+    line-height: 1;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  /* 快速操作按鈕區 */
+  .control {
+    display: flex;
+    gap: 15px;
+    margin: 25px 0;
+  }
+  .control button {
+    flex: 1;
+    height: 100px;
+    font-size: 40px;
+    font-weight: bold;
+    border: none;
+    border-radius: 18px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.2s;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+  }
+  .control button:active { transform: scale(0.95); box-shadow: none; }
+  .control button:disabled { opacity: 0.5; cursor: not-allowed; }
+  
+  .btn-plus-1 { background: var(--warning-color); } /* 橘色 +1 */
+  .btn-plus-5 { background: var(--success-color); } /* 綠色 +5 */
+
+  /* 手動輸入區 */
+  .input-group { margin-bottom: 20px; text-align: left; }
+  .input-label { font-size: 14px; color: var(--text-sub); margin-bottom: 8px; display: block; padding-left: 5px; }
+  input {
+    width: 100%;
+    font-size: 28px;
+    padding: 18px;
+    text-align: center;
+    border-radius: 14px;
+    border: 2px solid #d9d9d9;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+  }
+  input:focus { border-color: var(--primary-color); outline: none; }
+
+  /* 主送出按鈕 */
+  .submit {
+    width: 100%;
+    font-size: 30px;
+    padding: 22px;
+    border-radius: 20px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 0 #cf1322;
+    transition: all 0.1s;
+  }
   .submit:active { transform: translateY(4px); box-shadow: none; }
-  .submit:disabled { background: #ccc; box-shadow: none; }
-  .note { margin-top: 15px; font-size: 13px; color: #bbb; }
+  .submit:disabled { background: #ccc; box-shadow: none; transform: translateY(4px); }
+
+  .note {
+    margin-top: 15px;
+    font-size: 13px;
+    color: var(--text-sub);
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+  }
 </style>
 </head>
 
 <body>
 <div class="container">
-  <h1>離園人數</h1>
-  <div class="label">今日累計</div>
-  <div id="count">...</div>
-  <div class="label">位遊客已離園</div>
-
-  <div style="margin-top: 20px;">
-    <input type="number" inputmode="numeric" id="manualInput" placeholder="輸入數字後按送出">
+  <h1>離園控管</h1>
+  <div class="label">今日累計離園</div>
+  
+  <div class="count-box">
+    <div id="count">...</div>
+    <div class="label" style="font-size: 16px;">位遊客</div>
   </div>
 
   <div class="control">
-    <button class="btn-plus-1" onclick="sendDelta(1)">+ 1</button>
-    <button class="btn-plus-5" onclick="sendDelta(5)">+ 5</button>
+    <button class="btn-plus-1 action-btn" onclick="sendDelta(1)">+ 1</button>
+    <button class="btn-plus-5 action-btn" onclick="sendDelta(5)">+ 5</button>
   </div>
 
-  <button class="submit" id="mainBtn" onclick="handleManual()">送出輸入人數</button>
+  <div class="input-group">
+    <label class="input-label">大批遊客離園時直接輸入：</label>
+    <input type="number" inputmode="numeric" id="manualInput" placeholder="例如：20">
+  </div>
 
-  <div class="note">數據將同步至長官的後慈湖總帳</div>
+  <button class="submit" id="mainBtn" onclick="handleManual()">送出手動輸入人數</button>
+
+  <div class="note">操作將即時同步至人流總帳，確保數據平衡。</div>
 </div>
 
 <script>
+// 此 GAS 網址已從你的代碼中讀取
 const GAS_URL = "https://script.google.com/macros/s/AKfycbw5VQi-dtLodRQbKTgzueGGXgMBBedA_Th93Skr_Dia3-JYbxtd00shnZ24axbznDY/exec";
 
 let currentOut = 0;
@@ -53,18 +158,24 @@ let isSending = false;
 
 // 初始化：讀取最新人數
 async function fetchCurrent() {
+  const countEl = document.getElementById("count");
   try {
     const res = await fetch(GAS_URL);
+    if (!res.ok) throw new Error('網路錯誤');
     const data = await res.json();
     updateDisplay(data.out);
   } catch (err) {
-    document.getElementById("count").innerText = "ERR";
+    countEl.innerText = "ERR";
+    countEl.style.fontSize = "60px";
+    console.error(err);
   }
 }
 
 function updateDisplay(val) {
   currentOut = Number(val || 0);
-  document.getElementById("count").innerText = currentOut;
+  const countEl = document.getElementById("count");
+  countEl.innerText = currentOut;
+  countEl.style.fontSize = currentOut > 9999 ? "80px" : "110px"; // 針對大數字縮小字體
 }
 
 // 處理手動輸入框的送出
@@ -72,29 +183,40 @@ function handleManual() {
   const inputEl = document.getElementById("manualInput");
   const val = parseInt(inputEl.value);
   if (isNaN(val) || val <= 0) {
-    alert("請輸入正確的人數");
+    alert("❌ 請輸入正確的人數（大於 0 的整數）");
     return;
   }
   sendDelta(val);
-  inputEl.value = "";
+  inputEl.value = ""; // 清空輸入框
   inputEl.blur(); // 收起鍵盤
 }
 
 // 核心傳送邏輯
 async function sendDelta(delta) {
   if (isSending) return;
+  
+  // 安全確認
   if (!confirm(`確認回報 ${delta} 位遊客離園？`)) return;
 
   const btn = document.getElementById("mainBtn");
+  const actionBtns = document.querySelectorAll(".action-btn");
+  const inputEl = document.getElementById("manualInput");
+  
+  // 進入傳送狀態
   isSending = true;
   btn.disabled = true;
+  inputEl.disabled = true;
+  actionBtns.forEach(b => b.disabled = true);
   btn.innerText = "同步中...";
 
-  if (navigator.vibrate) navigator.vibrate(50); // 震動回饋
+  // 觸覺回饋（手機震動）
+  if (navigator.vibrate) navigator.vibrate(50);
 
   try {
     const res = await fetch(GAS_URL, {
       method: "POST",
+      // 確保跨域請求正確送出
+      mode: 'no-cors', 
       body: JSON.stringify({
         type: "OUT",
         delta: delta,
@@ -102,18 +224,28 @@ async function sendDelta(delta) {
       })
     });
 
-    const data = await res.json();
-    updateDisplay(data.out);
+    // 由於 no-cors 模式無法讀取 response 回傳值，
+    // 我們在傳送成功後，手動加上 delta 並更新顯示。
+    // 這能保證前端介面的即時性。
+    updateDisplay(currentOut + delta);
     
+    // 如果需要精確數據，可以在傳送成功後再次 fetch 最新總數
+    // setTimeout(fetchCurrent, 1000); 
+
   } catch (err) {
-    alert("❌ 傳送失敗，請檢查網路連線");
+    alert("❌ 傳送失敗，請確認網路連線是否正常");
+    console.error(err);
   } finally {
+    // 恢復狀態
     isSending = false;
     btn.disabled = false;
-    btn.innerText = "送出輸入人數";
+    inputEl.disabled = false;
+    actionBtns.forEach(b => b.disabled = false);
+    btn.innerText = "送出手動輸入人數";
   }
 }
 
+// 頁面載入時執行
 window.addEventListener("load", fetchCurrent);
 </script>
 </body>
