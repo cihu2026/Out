@@ -1,92 +1,15 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>後慈湖離園計數</title>
-    <style>
-        :root { --primary: #ff4d4f; --bg: #f5f5f5; }
-        body { font-family: sans-serif; background: var(--bg); margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        
-        /* 頂部狀態列 */
-        .header { background: white; padding: 15px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .header h1 { margin: 0; font-size: 20px; color: #333; }
-
-        /* 數字顯示區 */
-        .display-box { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        #num { font-size: 120px; font-weight: bold; color: var(--primary); line-height: 1; }
-        .unit { font-size: 24px; color: #888; }
-
-        /* 按鈕區 */
-        .controls { background: white; padding: 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; border-radius: 20px 20px 0 0; }
-        button { border: none; border-radius: 12px; font-size: 24px; font-weight: bold; padding: 20px 0; active-transform: scale(0.95); transition: 0.1s; }
-        
-        .btn-gray { background: #eeeeee; color: #333; }
-        .btn-gray:active { background: #ddd; transform: scale(0.92); }
-        
-        .btn-main { grid-column: span 4; background: var(--primary); color: white; margin-top: 10px; padding: 25px; font-size: 28px; }
-        .btn-main:active { background: #cf1322; transform: scale(0.98); }
-        
-        .reset { grid-column: span 4; background: none; color: #999; font-size: 16px; padding: 10px; }
-    </style>
-</head>
-<body>
-
-<div class="header"><h1>志工老師 - 離園報報</h1></div>
-
-<div class="display-box">
-    <span id="num">1</span>
-    <span class="unit">人準備離園</span>
-</div>
-
-<div class="controls">
-    <button class="btn-gray" onclick="change(1)">+1</button>
-    <button class="btn-gray" onclick="change(5)">+5</button>
-    <button class="btn-gray" onclick="change(10)">+10</button>
-    <button class="btn-gray" onclick="change(-1)">-1</button>
+<div class="control-panel">
+    <h1>後慈湖 - 離園計數</h1>
+    <div id="display-area">
+        <span id="current-val">1</span> 人
+    </div>
     
-    <button id="send" class="btn-main" onclick="send()">確認送出</button>
-    <button class="reset" onclick="reset()">重新歸零</button>
+    <div class="button-group">
+        <button onclick="add(1)">+1</button>
+        <button onclick="add(5)">+5</button>
+        <button onclick="add(10)">+10</button>
+        <button onclick="reset()">歸零</button>
+    </div>
+
+    <button id="send-btn" onclick="submitToGas()">確認送出 (離園)</button>
 </div>
-
-<script>
-    let count = 1;
-    const webAppUrl = "你的GAS網址"; // 記得替換！
-
-    function change(v) {
-        count = Math.max(1, count + v);
-        document.getElementById('num').innerText = count;
-        if (window.navigator.vibrate) window.navigator.vibrate(50); // 震動回饋
-    }
-
-    function reset() {
-        count = 1;
-        document.getElementById('num').innerText = count;
-    }
-
-    async function send() {
-        if (!confirm(`確定送出 ${count} 人離園嗎？`)) return;
-        
-        const btn = document.getElementById('send');
-        btn.disabled = true;
-        btn.innerText = "傳送中...";
-
-        try {
-            await fetch(webAppUrl, {
-                method: "POST",
-                mode: "no-cors",
-                body: JSON.stringify({ action: "OUT", count: count })
-            });
-            alert("✅ 成功！數據已存入試算表");
-            reset();
-        } catch (e) {
-            alert("❌ 失敗，請檢查網路");
-        } finally {
-            btn.disabled = false;
-            btn.innerText = "確認送出";
-        }
-    }
-</script>
-
-</body>
-</html>
