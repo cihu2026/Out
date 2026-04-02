@@ -1,15 +1,91 @@
-<div class="control-panel">
-    <h1>後慈湖 - 離園計數</h1>
-    <div id="display-area">
-        <span id="current-val">1</span> 人
-    </div>
-    
-    <div class="button-group">
-        <button onclick="add(1)">+1</button>
-        <button onclick="add(5)">+5</button>
-        <button onclick="add(10)">+10</button>
-        <button onclick="reset()">歸零</button>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>後慈湖 - 志工離園控管</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: white; width: 90%; max-width: 400px; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; border-top: 10px solid #ff4d4f; }
+        h1 { color: #333; margin-bottom: 5px; }
+        p { color: #666; margin-bottom: 20px; }
+        .counter-display { background: #fff1f0; border: 2px solid #ffccc7; border-radius: 15px; padding: 20px; margin-bottom: 25px; }
+        #count { font-size: 80px; font-weight: bold; color: #ff4d4f; display: block; }
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        button { border: none; border-radius: 12px; font-size: 20px; cursor: pointer; transition: 0.2s; }
+        .adjust-btn { background: #f5f5f5; color: #333; padding: 20px; border: 1px solid #d9d9d9; }
+        .adjust-btn:active { background: #e8e8e8; }
+        .submit-btn { background: #ff4d4f; color: white; width: 100%; padding: 20px; font-size: 28px; font-weight: bold; box-shadow: 0 4px 0 #cf1322; }
+        .submit-btn:disabled { background: #ffa39e; box-shadow: none; transform: translateY(4px); }
+        .reset-btn { background: none; color: #999; margin-top: 15px; font-size: 16px; text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>離園控管</h1>
+    <p>志工老師請點選離園人數</p>
+
+    <div class="counter-display">
+        <span id="count">1</span>
+        <span style="color: #ff7875;">位遊客離園</span>
     </div>
 
-    <button id="send-btn" onclick="submitToGas()">確認送出 (離園)</button>
+    <div class="btn-grid">
+        <button class="adjust-btn" onclick="change(1)">+ 1</button>
+        <button class="adjust-btn" onclick="change(5)">+ 5</button>
+        <button class="adjust-btn" onclick="change(-1)">- 1</button>
+        <button class="adjust-btn" onclick="change(10)">+ 10</button>
+    </div>
+
+    <button id="send-btn" class="submit-btn" onclick="sendData()">確認送出</button>
+    <button class="reset-btn" onclick="reset()">歸零重置</button>
 </div>
+
+<script>
+    let currentCount = 1;
+    const gasUrl = "你的_GAS_網址"; // 請在此填入你的 GAS 部署網址
+
+    function change(v) {
+        currentCount = Math.max(1, currentCount + v);
+        document.getElementById('count').innerText = currentCount;
+    }
+
+    function reset() {
+        currentCount = 1;
+        document.getElementById('count').innerText = currentCount;
+    }
+
+    async function sendData() {
+        const btn = document.getElementById('send-btn');
+        const originalText = btn.innerText;
+        
+        if (!confirm(`確定記錄 ${currentCount} 人離園嗎？`)) return;
+
+        btn.disabled = true;
+        btn.innerText = "傳送中...";
+
+        try {
+            await fetch(gasUrl, {
+                method: "POST",
+                mode: "no-cors",
+                body: JSON.stringify({
+                    action: "OUT",
+                    count: currentCount,
+                    timestamp: new Date().toISOString()
+                })
+            });
+            
+            alert("✅ 成功傳送！");
+            reset();
+        } catch (e) {
+            alert("❌ 傳送失敗，請檢查網路！");
+        } finally {
+            btn.disabled = false;
+            btn.innerText = originalText;
+        }
+    }
+</script>
+
+</body>
+</html>
