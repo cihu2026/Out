@@ -3,138 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>後慈湖｜志工離園控管(含校正)</title>
-
+<title>後慈湖｜志工離園控管</title>
 <style>
-  :root {
-    --primary-color: #ff4d4f;
-    --success-color: #52c41a;
-    --warning-color: #ffa940;
-    --correction-color: #8c8c8c; /* 修正用的灰色 */
-    --bg-color: #f0f2f5;
-  }
-
-  body {
-    font-family: -apple-system, system-ui, sans-serif;
-    background: var(--bg-color);
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-  }
-
-  .container {
-    background: #fff;
-    width: 92%;
-    max-width: 420px;
-    padding: 25px;
-    border-radius: 24px;
-    text-align: center;
-    border-top: 12px solid var(--primary-color);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-    box-sizing: border-box;
-  }
-
+  :root { --primary-color: #ff4d4f; --success-color: #52c41a; --warning-color: #ffa940; --correction-color: #8c8c8c; --bg-color: #f0f2f5; }
+  body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg-color); margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+  .container { background: #fff; width: 92%; max-width: 420px; padding: 25px; border-radius: 24px; text-align: center; border-top: 12px solid var(--primary-color); box-shadow: 0 15px 35px rgba(0,0,0,0.1); box-sizing: border-box; }
   h1 { margin: 0; font-size: 24px; color: #333; }
   .label { color: #888; font-size: 16px; margin-bottom: 5px; }
-
-  .count-box {
-    background: #fff1f0;
-    border: 2px solid #ffccc7;
-    border-radius: 16px;
-    padding: 15px;
-    margin: 15px 0;
-  }
-  #count {
-    font-size: 100px;
-    font-weight: 900;
-    color: var(--primary-color);
-    line-height: 1;
-    display: block;
-  }
-
-  /* 按鈕區配置：1大1小 */
-  .control-row {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-  button {
-    border: none;
-    border-radius: 16px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.1s, opacity 0.2s;
-  }
+  .count-box { background: #fff1f0; border: 2px solid #ffccc7; border-radius: 16px; padding: 15px; margin: 15px 0; }
+  #count { font-size: 100px; font-weight: 900; color: var(--primary-color); line-height: 1; display: block; }
+  .control-row { display: flex; gap: 12px; margin-bottom: 12px; }
+  button { border: none; border-radius: 16px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.1s; }
   button:active { transform: scale(0.95); }
-  button:disabled { opacity: 0.5; }
-
   .btn-main-add { flex: 2; height: 80px; font-size: 32px; background: var(--success-color); }
   .btn-quick-add { flex: 1; height: 80px; font-size: 32px; background: var(--warning-color); }
-  .btn-fix { flex: 1; height: 60px; font-size: 20px; background: var(--correction-color); margin-top: 5px; }
-
-  /* 手動輸入 */
+  .btn-fix { flex: 1; height: 60px; font-size: 20px; background: var(--correction-color); }
   .input-area { margin: 15px 0; }
-  input {
-    width: 100%;
-    font-size: 24px;
-    padding: 12px;
-    text-align: center;
-    border-radius: 12px;
-    border: 2px solid #ddd;
-    box-sizing: border-box;
-  }
-
-  .submit-all {
-    width: 100%;
-    padding: 18px;
-    font-size: 24px;
-    background: var(--primary-color);
-    color: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 0 #cf1322;
-  }
+  input { width: 100%; font-size: 24px; padding: 12px; text-align: center; border-radius: 12px; border: 2px solid #ddd; box-sizing: border-box; }
+  .submit-all { width: 100%; padding: 18px; font-size: 24px; background: var(--primary-color); color: white; border-radius: 16px; box-shadow: 0 4px 0 #cf1322; }
   .submit-all:active { transform: translateY(4px); box-shadow: none; }
-
   .note { font-size: 12px; color: #aaa; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px; }
 </style>
 </head>
-
 <body>
 <div class="container">
   <h1>離園控管</h1>
   <div class="label">今日累計離園</div>
-  
-  <div class="count-box">
-    <div id="count">...</div>
-    <div style="color:#ff7875">人</div>
-  </div>
-
+  <div class="count-box"><div id="count">...</div><div style="color:#ff7875">人</div></div>
   <div class="control-row">
     <button class="btn-main-add" onclick="sendDelta(5)">+ 5</button>
     <button class="btn-quick-add" onclick="sendDelta(1)">+ 1</button>
   </div>
-
-  <div class="control-row">
-    <button class="btn-fix" onclick="sendDelta(-1)" style="flex:1">打錯了？ 扣回 - 1</button>
-  </div>
-
-  <div class="input-area">
-    <div class="label">大量離園或負數校正：</div>
-    <input type="number" id="manualInput" placeholder="輸入數字(如-10)">
-  </div>
-
+  <div class="control-row"><button class="btn-fix" onclick="sendDelta(-1)">打錯了？ 扣回 - 1</button></div>
+  <div class="input-area"><input type="number" id="manualInput" placeholder="輸入數字(如-10)"></div>
   <button class="submit-all" id="mainBtn" onclick="handleManual()">送出數據</button>
-
-  <div class="note">若數據有誤，可輸入負數(如-3)進行校正。</div>
+  <div class="note">數據與驗票系統即時連動</div>
 </div>
 
 <script>
 const GAS_URL = "https://script.google.com/macros/s/AKfycbw5VQi-dtLodRQbKTgzueGGXgMBBedA_Th93Skr_Dia3-JYbxtd00shnZ24axbznDY/exec";
-
 let currentOut = 0;
 let isSending = false;
 
@@ -143,9 +50,7 @@ async function fetchCurrent() {
     const res = await fetch(GAS_URL);
     const data = await res.json();
     updateDisplay(data.out);
-  } catch (err) {
-    document.getElementById("count").innerText = "ERR";
-  }
+  } catch (err) { document.getElementById("count").innerText = "ERR"; }
 }
 
 function updateDisplay(val) {
@@ -156,47 +61,28 @@ function updateDisplay(val) {
 function handleManual() {
   const inputEl = document.getElementById("manualInput");
   const val = parseInt(inputEl.value);
-  if (isNaN(val) || val === 0) {
-    alert("請輸入非 0 的人數");
-    return;
-  }
+  if (isNaN(val) || val === 0) return;
   sendDelta(val);
   inputEl.value = "";
-  inputEl.blur();
 }
 
 async function sendDelta(delta) {
   if (isSending) return;
-  
-  const msg = delta > 0 ? `確認送出 ${delta} 人離園？` : `確認扣除 ${Math.abs(delta)} 人（校正）？`;
-  if (!confirm(msg)) return;
-
+  if (!confirm(delta > 0 ? `確認送出 ${delta} 人？` : `確認扣除 ${Math.abs(delta)} 人？`)) return;
   const btn = document.getElementById("mainBtn");
-  isSending = true;
-  btn.disabled = true;
-  btn.innerText = "同步中...";
-
-  if (navigator.vibrate) navigator.vibrate(50);
-
+  isSending = true; btn.disabled = true; btn.innerText = "同步中...";
   try {
-    await fetch(GAS_URL, {
+    const res = await fetch(GAS_URL, {
       method: "POST",
-      mode: 'no-cors', 
-      body: JSON.stringify({ type: "OUT", delta: delta })
+      body: JSON.stringify({ type: "OUT", delta: delta, source: "離園App" })
     });
-
-    // 即時樂觀更新介面
-    updateDisplay(currentOut + delta);
-    
+    const data = await res.json();
+    updateDisplay(data.out);
   } catch (err) {
-    alert("❌ 失敗，請檢查網路");
-  } finally {
-    isSending = false;
-    btn.disabled = false;
-    btn.innerText = "送出數據";
-  }
+    alert("同步失敗，已先預計更新");
+    updateDisplay(currentOut + delta);
+  } finally { isSending = false; btn.disabled = false; btn.innerText = "送出數據"; }
 }
-
 window.addEventListener("load", fetchCurrent);
 </script>
 </body>
