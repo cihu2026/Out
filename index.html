@@ -4,142 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>⏱️ 後慈湖｜離園人數控管</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 
 <style>
-  /* 全域樣式：明亮背景與漸層 */
-  body { 
-    font-family: 'Noto Sans TC', sans-serif; 
-    background: linear-gradient(135deg, #e0f7fa 0%, #fffde7 100%); 
-    color: #333; 
-    margin: 0; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    height: 100vh; 
-  }
-
-  /* 卡片樣式 */
-  .container { 
-    background: #ffffff; 
-    width: 90%; 
-    max-width: 420px; 
-    padding: 40px 30px; 
-    border-radius: 35px; 
-    border-top: 15px solid #00acc1; 
-    box-shadow: 0 20px 50px rgba(0,0,0,0.1); 
-    text-align: center; 
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .container::after {
-    content: '';
-    position: absolute;
-    bottom: -50px;
-    right: -50px;
-    width: 150px;
-    height: 150px;
-    background: rgba(0, 172, 193, 0.05);
-    border-radius: 50%;
-  }
-
+  /* 你原本美化後的樣式 */
+  body { font-family: 'Noto Sans TC', sans-serif; background: linear-gradient(135deg, #e0f7fa 0%, #fffde7 100%); color: #333; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+  .container { background: #ffffff; width: 90%; max-width: 420px; padding: 40px 30px; border-radius: 35px; border-top: 15px solid #00acc1; box-shadow: 0 20px 50px rgba(0,0,0,0.1); text-align: center; position: relative; overflow: hidden; }
+  .container::after { content: ''; position: absolute; bottom: -50px; right: -50px; width: 150px; height: 150px; background: rgba(0, 172, 193, 0.05); border-radius: 50%; }
   h1 { margin: 0; font-size: 32px; color: #006064; font-weight: 900; letter-spacing: -1px; }
   .sub { color: #78909c; margin: 12px 0 25px; font-size: 16px; font-weight: 500; }
-
-  .display { 
-    background: #e0f2f1; 
-    border-radius: 25px; 
-    padding: 30px 20px; 
-    margin: 25px 0; 
-    border: 2px solid #b2dfdb; 
-    box-shadow: inset 0 5px 10px rgba(0,0,0,0.03);
-  }
-
-  #status { 
-    font-size: 80px; 
-    font-weight: 900; 
-    color: #00796b; 
-    line-height: 1;
-    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
-  } 
-  
+  .display { background: #e0f2f1; border-radius: 25px; padding: 30px 20px; margin: 25px 0; border: 2px solid #b2dfdb; box-shadow: inset 0 5px 10px rgba(0,0,0,0.03); }
+  #status { font-size: 80px; font-weight: 900; color: #00796b; line-height: 1; text-shadow: 2px 2px 0 rgba(255,255,255,0.8); } 
   .unit { margin-top: 8px; color: #4db6ac; font-weight: 700; font-size: 18px; }
-
   .row { display: flex; gap: 15px; margin-bottom: 15px; }
-  
-  button { 
-    cursor: pointer; 
-    transition: all 0.2s ease; 
-    border: none; 
-    font-family: inherit; 
-    box-sizing: border-box;
-  }
+  button { cursor: pointer; transition: all 0.2s ease; border: none; font-family: inherit; box-sizing: border-box; }
   button:active { transform: scale(0.96); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-
-  .btn { 
-    flex: 1; 
-    font-size: 28px; 
-    padding: 22px; 
-    border-radius: 20px; 
-    color: white; 
-    font-weight: 700; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
-    gap: 10px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-  }
+  .btn { flex: 1; font-size: 28px; padding: 22px; border-radius: 20px; color: white; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
   .plus5 { background: linear-gradient(135deg, #43a047 0%, #66bb6a 100%); }
   .plus1 { background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%); }
-
-  .fix { 
-    width: 100%; 
-    background: #cfd8dc; 
-    font-size: 18px; 
-    padding: 18px; 
-    border-radius: 18px; 
-    color: #546e7a; 
-    margin-bottom: 20px; 
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-  .fix:hover { background: #b0bec5; color: #37474f; }
-
-  input[type="number"] { 
-    width: 100%; 
-    font-size: 22px; 
-    padding: 18px; 
-    border-radius: 15px; 
-    border: 3px solid #b2dfdb; 
-    background: #fff; 
-    color: #004d40; 
-    text-align: center; 
-    margin-bottom: 20px; 
-    box-sizing: border-box;
-    font-weight: 700;
-    transition: border-color 0.2s;
-  }
-
-  .submit { 
-    width: 100%; 
-    background: linear-gradient(135deg, #00acc1 0%, #26c6da 100%); 
-    color: white; 
-    font-size: 24px; 
-    padding: 20px; 
-    border-radius: 20px; 
-    font-weight: 700; 
-    box-shadow: 0 8px 20px rgba(0, 172, 193, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-  }
-
+  .fix { width: 100%; background: #cfd8dc; font-size: 18px; padding: 18px; border-radius: 18px; color: #546e7a; margin-bottom: 20px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  input[type="number"] { width: 100%; font-size: 22px; padding: 18px; border-radius: 15px; border: 3px solid #b2dfdb; background: #fff; color: #004d40; text-align: center; margin-bottom: 20px; box-sizing: border-box; font-weight: 700; }
+  .submit { width: 100%; background: linear-gradient(135deg, #00acc1 0%, #26c6da 100%); color: white; font-size: 24px; padding: 20px; border-radius: 20px; font-weight: 700; box-shadow: 0 8px 20px rgba(0, 172, 193, 0.3); display: flex; align-items: center; justify-content: center; gap: 12px; }
   .footer { margin-top: 25px; font-size: 13px; color: #b0bec5; font-weight: 500; }
 </style>
 </head>
@@ -150,7 +35,7 @@
   <div class="sub">🚌 當前場內總人數</div>
 
   <div class="display">
-    <div id="status">讀取中…</div>
+    <div id="status">⏳</div>
     <div class="unit">👤 人</div>
   </div>
 
@@ -171,3 +56,63 @@
 
   <div class="footer">🔄 數據與驗票系統即時連動</div>
 </div>
+
+<script>
+  // 🔴 必須確保與你的 Google Script 部署網址一致
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbw5VQi-dtLodRQbKTgzueGGXgMBBedA_Th93Skr_Dia3-JYbxtd00shnZ24axbznDY/exec";
+  const statusEl = document.getElementById("status");
+
+  // 初始化讀取
+  window.addEventListener("load", fetchCurrent);
+
+  // 讀取場內人數
+  async function fetchCurrent() {
+    try {
+      // 加上 action=getCount 讓後台知道是要回傳人數 JSON
+      const res = await fetch(GAS_URL + "?action=getCount");
+      const data = await res.json();
+      statusEl.innerText = data.current !== undefined ? data.current : "0";
+    } catch (e) {
+      console.error("讀取失敗", e);
+      statusEl.innerText = "❌";
+    }
+  }
+
+  // 發送人數變動
+  async function sendDelta(delta) {
+    if (delta === 0) return;
+    const actionText = delta > 0 ? `📝 登記 ${delta} 人離園？` : `✏️ 修正：扣回 ${Math.abs(delta)} 人？`;
+    if (!confirm(actionText)) return;
+
+    statusEl.innerText = "⏳";
+
+    try {
+      await fetch(GAS_URL, {
+        method: "POST",
+        mode: "no-cors", 
+        body: JSON.stringify({
+          type: "OUT",
+          delta: delta,
+          source: "離園端操作"
+        })
+      });
+
+      // 成功後延遲一下再重新讀取最新人數
+      setTimeout(fetchCurrent, 1500);
+    } catch (e) {
+      alert("❌ 傳送失敗，請檢查網路");
+      fetchCurrent();
+    }
+  }
+
+  // 手動輸入送出
+  function sendCustom() {
+    const input = document.getElementById("customInput");
+    const val = parseInt(input.value);
+    if (isNaN(val) || val === 0) return alert("⚠️ 請輸入有效的數字");
+    sendDelta(val);
+    input.value = "";
+  }
+</script>
+</body>
+</html>
