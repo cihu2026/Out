@@ -20,21 +20,20 @@
     height: 100vh; 
   }
 
-  /* 卡片樣式：白色圓潤陰影風 */
+  /* 卡片樣式 */
   .container { 
     background: #ffffff; 
     width: 90%; 
     max-width: 420px; 
     padding: 40px 30px; 
     border-radius: 35px; 
-    border-top: 15px solid #00acc1; /* 頂部改為亮藍綠色 */
+    border-top: 15px solid #00acc1; 
     box-shadow: 0 20px 50px rgba(0,0,0,0.1); 
     text-align: center; 
     position: relative;
     overflow: hidden;
   }
   
-  /* 卡片裝飾水波紋 */
   .container::after {
     content: '';
     position: absolute;
@@ -46,11 +45,9 @@
     border-radius: 50%;
   }
 
-  /* 標題與副標題 */
   h1 { margin: 0; font-size: 32px; color: #006064; font-weight: 900; letter-spacing: -1px; }
   .sub { color: #78909c; margin: 12px 0 25px; font-size: 16px; font-weight: 500; }
 
-  /* 數字顯示區：圓潤淡藍色 */
   .display { 
     background: #e0f2f1; 
     border-radius: 25px; 
@@ -60,7 +57,6 @@
     box-shadow: inset 0 5px 10px rgba(0,0,0,0.03);
   }
 
-  /* 大數字樣式 */
   #status { 
     font-size: 80px; 
     font-weight: 900; 
@@ -69,13 +65,10 @@
     text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
   } 
   
-  /* 單位樣式 */
   .unit { margin-top: 8px; color: #4db6ac; font-weight: 700; font-size: 18px; }
 
-  /* 按鈕列樣式 */
   .row { display: flex; gap: 15px; margin-bottom: 15px; }
   
-  /* 通用按鈕樣式 */
   button { 
     cursor: pointer; 
     transition: all 0.2s ease; 
@@ -85,7 +78,6 @@
   }
   button:active { transform: scale(0.96); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
-  /* 離園按鈕 (+5 / +1) */
   .btn { 
     flex: 1; 
     font-size: 28px; 
@@ -99,10 +91,9 @@
     gap: 10px;
     box-shadow: 0 6px 15px rgba(0,0,0,0.1);
   }
-  .plus5 { background: linear-gradient(135deg, #43a047 0%, #66bb6a 100%); } /* 綠色 */
+  .plus5 { background: linear-gradient(135deg, #43a047 0%, #66bb6a 100%); }
   .plus1 { background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%); }
 
-  /* 修正按鈕 (灰色) */
   .fix { 
     width: 100%; 
     background: #cfd8dc; 
@@ -119,7 +110,6 @@
   }
   .fix:hover { background: #b0bec5; color: #37474f; }
 
-  /* 輸入框樣式 */
   input[type="number"] { 
     width: 100%; 
     font-size: 22px; 
@@ -134,13 +124,7 @@
     font-weight: 700;
     transition: border-color 0.2s;
   }
-  input[type="number"]:focus {
-    border-color: #4db6ac;
-    outline: none;
-    box-shadow: 0 0 10px rgba(77, 182, 172, 0.3);
-  }
 
-  /* 送出按鈕 (藍綠色渐層) */
   .submit { 
     width: 100%; 
     background: linear-gradient(135deg, #00acc1 0%, #26c6da 100%); 
@@ -155,9 +139,7 @@
     justify-content: center;
     gap: 12px;
   }
-  .submit:hover { box-shadow: 0 10px 25px rgba(0, 172, 193, 0.4); }
 
-  /* 頁尾文字 */
   .footer { margin-top: 25px; font-size: 13px; color: #b0bec5; font-weight: 500; }
 </style>
 </head>
@@ -165,7 +147,7 @@
 <body>
 <div class="container">
   <h1>🌅 後慈湖</h1>
-  <div class="sub">🚌 今日累計離園人數</div>
+  <div class="sub">🚌 當前場內總人數</div>
 
   <div class="display">
     <div id="status">讀取中…</div>
@@ -189,62 +171,3 @@
 
   <div class="footer">🔄 數據與驗票系統即時連動</div>
 </div>
-
-<script>
-// 🔴 確保此 URL 與 Code.gs 部署網址一致
-const GAS_URL = "https://script.google.com/macros/s/AKfycbw5VQi-dtLodRQbKTgzueGGXgMBBedA_Th93Skr_Dia3-JYbxtd00shnZ24axbznDY/exec";
-
-const statusEl = document.getElementById("status");
-
-// 載入時先抓取累計離園人數
-window.addEventListener("load", fetchOutCount);
-
-async function fetchOutCount() {
-  try {
-    statusEl.innerText = "⏳"; // 讀取中顯示沙漏
-    const res = await fetch(GAS_URL);
-    const data = await res.json();
-    // 根據 Code.gs 回傳結果顯示累計離園人數 (out 欄位)
-    statusEl.innerText = data.out !== undefined ? data.out : "??";
-  } catch (e) {
-    statusEl.innerText = "❌"; // 錯誤顯示叉叉
-  }
-}
-
-async function sendDelta(delta) {
-  if (delta === 0) return;
-  const actionText = delta > 0 ? `📝 登記 ${delta} 人離園？` : `✏️ 修正：扣回 ${Math.abs(delta)} 人？`;
-  if (!confirm(actionText)) return;
-
-  statusEl.innerText = "⏳"; // 更新中顯示沙漏
-
-  try {
-    await fetch(GAS_URL, {
-      method: "POST",
-      mode: "no-cors", 
-      body: JSON.stringify({
-        type: "OUT",
-        delta: delta,
-        source: "離園端操作",
-        note: delta > 0 ? "志工登記離園" : "志工修正操作"
-      })
-    });
-
-    // 延遲更新畫面
-    setTimeout(fetchOutCount, 1200);
-  } catch (e) {
-    alert("❌ 傳送失敗，請檢查網路");
-    fetchOutCount();
-  }
-}
-
-function sendCustom() {
-  const input = document.getElementById("customInput");
-  const val = parseInt(input.value);
-  if (isNaN(val) || val === 0) return alert("⚠️ 請輸入有效的數字");
-  sendDelta(val);
-  input.value = "";
-}
-</script>
-</body>
-</html>
