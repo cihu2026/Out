@@ -2,136 +2,143 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>⏱️ 後慈湖｜離園控管 Turbo PRO v2</title>
 
 <style>
-body{
-  margin:0;
-  font-family:-apple-system,"Noto Sans TC",sans-serif;
-  background:linear-gradient(135deg,#eef3f7,#fdfcfb);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
+/* 核心佈局優化 */
+body {
+  margin: 0;
+  font-family: -apple-system, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  background: linear-gradient(160deg, #e0eafc 0%, #cfdef3 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* 主卡片 */
-.container{
-  width:92%;
-  max-width:420px;
-  padding:28px;
-  border-radius:28px;
-  background:rgba(255,255,255,0.75);
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-  box-shadow:0 25px 60px rgba(0,0,0,0.08);
-  text-align:center;
+/* 主卡片：強化玻璃擬態感 */
+.container {
+  width: 88%;
+  max-width: 380px;
+  padding: 30px 24px;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  border: 1px solid rgba(255,255,255,0.4);
+  text-align: center;
 }
 
-/* 標題 */
-h1{
-  font-size:24px;
-  margin:0;
-  color:#2f4f4f;
-  letter-spacing:1px;
+h1 {
+  font-size: 22px;
+  margin: 0 0 20px 0;
+  color: #2c3e50;
+  font-weight: 800;
 }
 
-/* 顯示區 */
-.display{
-  margin:22px 0;
-  padding:28px;
-  border-radius:22px;
-  background:linear-gradient(145deg,#ffffff,#f1f3f6);
-  box-shadow:
-    inset 0 2px 6px rgba(0,0,0,0.05),
-    0 10px 25px rgba(0,0,0,0.06);
-  transition:0.25s;
+/* 數字顯示區：增加深度感 */
+.display {
+  margin: 20px 0;
+  padding: 35px 20px;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 
+    inset 0 2px 8px rgba(0,0,0,0.04),
+    0 10px 20px rgba(0,0,0,0.05);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* 數字 */
-#status{
-  font-size:72px;
-  font-weight:900;
-  color:#263238;
-  letter-spacing:-2px;
+#status {
+  font-size: 80px;
+  font-weight: 900;
+  color: #1a2a3a;
+  line-height: 1;
+  letter-spacing: -2px;
 }
 
-/* 動畫 */
-.flash{
-  animation:softFlash .25s ease;
+.display div:last-child {
+  margin-top: 10px;
+  color: #7f8c8d;
+  font-weight: 600;
+  font-size: 14px;
 }
 
-@keyframes softFlash{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.05);}
-  100%{transform:scale(1);}
+/* 動畫回饋 */
+.flash {
+  animation: bounce .3s ease;
 }
 
-/* 按鈕區 */
-.row{
-  display:flex;
-  gap:12px;
-  margin-bottom:12px;
+@keyframes bounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
 }
 
-button{
-  flex:1;
-  padding:18px;
-  font-size:18px;
-  border:none;
-  border-radius:16px;
-  font-weight:700;
-  color:#fff;
-  letter-spacing:.5px;
-  box-shadow:0 6px 15px rgba(0,0,0,0.08);
-  transition:all .15s ease;
+/* 按鈕美化 */
+.row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
-button:active{
-  transform:scale(0.96);
-  box-shadow:0 3px 8px rgba(0,0,0,0.1);
+button {
+  flex: 1;
+  padding: 16px 5px;
+  font-size: 17px;
+  border: none;
+  border-radius: 16px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* 按鈕色系（柔和版） */
-.add{
-  background:linear-gradient(135deg,#4caf50,#81c784);
-}
-.addSmall{
-  background:linear-gradient(135deg,#66bb6a,#a5d6a7);
-}
-.minus{
-  background:linear-gradient(135deg,#ef5350,#e57373);
-}
-.fix{
-  background:linear-gradient(135deg,#90a4ae,#b0bec5);
+button:active {
+  transform: translateY(2px) scale(0.95);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* 輸入框 */
-input{
-  width:100%;
-  margin-top:10px;
-  padding:14px;
-  border-radius:14px;
-  border:1.5px solid #dfe3e8;
-  font-size:18px;
-  text-align:center;
-  background:#fafafa;
-  transition:0.2s;
+/* 按鈕色調調優（提升對比度） */
+.add { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+.addSmall { background: linear-gradient(135deg, #55d68a, #42b983); }
+.minus { background: linear-gradient(135deg, #ff5f6d, #ffc371); } /* 漸層暖紅 */
+.fix { background: linear-gradient(135deg, #747d8c, #2f3542); }
+
+/* 輸入框美化 */
+input {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 10px 0 15px 0;
+  padding: 16px;
+  border-radius: 16px;
+  border: 2px solid #edf2f7;
+  font-size: 18px;
+  text-align: center;
+  background: #f8fafc;
+  color: #2d3436;
+  transition: all 0.3s ease;
 }
 
-input:focus{
-  outline:none;
-  border-color:#90caf9;
-  background:#fff;
+input:focus {
+  outline: none;
+  border-color: #3498db;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.15);
 }
 
-/* 底部 */
-.footer{
-  margin-top:16px;
-  font-size:12px;
-  color:#9e9e9e;
-  letter-spacing:.5px;
+.footer {
+  margin-top: 20px;
+  font-size: 11px;
+  color: #a0aec0;
+  letter-spacing: 1px;
+  font-weight: 500;
 }
 </style>
 </head>
@@ -158,11 +165,11 @@ input:focus{
 </div>
 
 <!-- 安全輸入 -->
-<input id="customInput" type="number" placeholder="輸入數量（不用打正負）">
+<input id="customInput" type="number" inputmode="numeric" placeholder="輸入數量（不用打正負）">
 
 <div class="row">
-  <button class="addSmall" onclick="sendCustom(true)">➕ 增加</button>
-  <button class="minus" onclick="sendCustom(false)">➖ 扣回</button>
+  <button class="addSmall" style="background:#3498db" onclick="sendCustom(true)">➕ 增加</button>
+  <button class="minus" style="background:#e17055" onclick="sendCustom(false)">➖ 扣回</button>
 </div>
 
 <div class="footer">Turbo PRO v2｜防誤觸｜震動回饋｜動畫</div>
@@ -175,7 +182,7 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbw5VQi-dtLodRQbKTgzueGG
 const statusEl = document.getElementById("status");
 const displayBox = document.getElementById("displayBox");
 
-let locked = false; // 防連點鎖
+let locked = false;
 
 window.addEventListener("load", fetchCurrent);
 
@@ -191,7 +198,7 @@ async function fetchCurrent(){
 
 function vibrate(){
   if(navigator.vibrate){
-    navigator.vibrate(30);
+    navigator.vibrate(40);
   }
 }
 
@@ -201,8 +208,7 @@ function animate(){
 }
 
 async function safeSend(val){
-
-  if(locked) return; // 🔒 防暴擊
+  if(locked) return;
   locked = true;
 
   let text = val>0
@@ -236,7 +242,7 @@ async function safeSend(val){
     fetchCurrent();
   }
 
-  setTimeout(()=>locked=false,800); // 解鎖
+  setTimeout(()=>locked=false,800);
 }
 
 function sendCustom(isAdd){
@@ -249,7 +255,6 @@ function sendCustom(isAdd){
   }
 
   val = isAdd ? val : -val;
-
   safeSend(val);
   input.value="";
 }
