@@ -10,7 +10,7 @@
 body {
   margin: 0;
   font-family: -apple-system, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-  background: #f0f4f8; /* 改為純色背景減少渲染負擔 */
+  background: linear-gradient(160deg, #e0eafc 0%, #cfdef3 100%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,94 +18,127 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* 主卡片：強化玻璃擬態感 */
 .container {
-  width: 90%;
+  width: 88%;
   max-width: 380px;
-  padding: 25px 20px;
-  border-radius: 24px;
-  background: #fff;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  padding: 30px 24px;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  border: 1px solid rgba(255,255,255,0.4);
   text-align: center;
 }
 
 h1 {
-  font-size: 20px;
-  margin: 0 0 15px 0;
+  font-size: 22px;
+  margin: 0 0 20px 0;
   color: #2c3e50;
+  font-weight: 800;
 }
 
-/* 數字顯示區：加快反應速度感 */
+/* 數字顯示區：增加深度感 */
 .display {
-  margin: 15px 0;
-  padding: 30px 20px;
-  border-radius: 20px;
-  background: #f8fafc;
-  border: 2px solid #edf2f7;
+  margin: 20px 0;
+  padding: 35px 20px;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 
+    inset 0 2px 8px rgba(0,0,0,0.04),
+    0 10px 20px rgba(0,0,0,0.05);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 #status {
-  font-size: 85px; /* 稍微加大 */
+  font-size: 80px;
   font-weight: 900;
   color: #1a2a3a;
   line-height: 1;
-  transition: transform 0.1s ease; /* 極速縮放 */
+  letter-spacing: -2px;
 }
 
-/* 加快動畫速度 */
+.display div:last-child {
+  margin-top: 10px;
+  color: #7f8c8d;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* 動畫回饋 */
 .flash {
-  animation: quickBounce .15s ease;
+  animation: bounce .3s ease;
 }
 
-@keyframes quickBounce {
+@keyframes bounce {
   0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  50% { transform: scale(1.08); }
   100% { transform: scale(1); }
 }
 
+/* 按鈕美化 */
 .row {
   display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 button {
   flex: 1;
-  padding: 18px 5px;
-  font-size: 18px;
+  padding: 16px 5px;
+  font-size: 17px;
   border: none;
-  border-radius: 14px;
+  border-radius: 16px;
   font-weight: 700;
   color: #fff;
   cursor: pointer;
-  transition: transform 0.05s linear; /* 幾乎瞬間反應 */
-  box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+  transition: all 0.1s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 button:active {
-  transform: translateY(3px); /* 更有按鈕實體感 */
-  box-shadow: none;
+  transform: translateY(2px) scale(0.95);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.add { background: #27ae60; }
-.addSmall { background: #2ecc71; }
-.minus { background: #e74c3c; }
-.fix { background: #34495e; }
+/* 按鈕色調調優（提升對比度） */
+.add { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+.addSmall { background: linear-gradient(135deg, #55d68a, #42b983); }
+.minus { background: linear-gradient(135deg, #ff5f6d, #ffc371); } /* 漸層暖紅 */
+.fix { background: linear-gradient(135deg, #747d8c, #2f3542); }
 
+/* 輸入框美化 */
 input {
   width: 100%;
   box-sizing: border-box;
-  margin: 10px 0;
-  padding: 15px;
-  border-radius: 12px;
-  border: 2px solid #dfe6e9;
-  font-size: 20px;
+  margin: 10px 0 15px 0;
+  padding: 16px;
+  border-radius: 16px;
+  border: 2px solid #edf2f7;
+  font-size: 18px;
   text-align: center;
+  background: #f8fafc;
+  color: #2d3436;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: #3498db;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.15);
 }
 
 .footer {
-  margin-top: 15px;
+  margin-top: 20px;
   font-size: 11px;
-  color: #b2bec3;
+  color: #a0aec0;
+  letter-spacing: 1px;
+  font-weight: 500;
 }
 </style>
 </head>
@@ -120,6 +153,7 @@ input {
   <div>👤 人</div>
 </div>
 
+<!-- 快速操作 -->
 <div class="row">
   <button class="add" onclick="safeSend(5)">➕5人離園</button>
   <button class="addSmall" onclick="safeSend(1)">➕1人離園</button>
@@ -130,14 +164,15 @@ input {
   <button class="fix" onclick="safeSend(-5)">➖5（返回）</button>
 </div>
 
-<input id="customInput" type="number" inputmode="numeric" placeholder="輸入數量">
+<!-- 安全輸入 -->
+<input id="customInput" type="number" inputmode="numeric" placeholder="輸入數量（不用打正負）">
 
 <div class="row">
   <button class="addSmall" style="background:#3498db" onclick="sendCustom(true)">➕ 離開</button>
-  <button class="minus" style="background:#e67e22" onclick="sendCustom(false)">➖ 撤回</button>
+  <button class="minus" style="background:#e17055" onclick="sendCustom(false)">➖ 撤回</button>
 </div>
 
-<div class="footer">Turbo PRO v2.1｜極速回饋版</div>
+<div class="footer">Turbo PRO v2｜防誤觸｜震動回饋｜動畫</div>
 
 </div>
 
@@ -148,7 +183,6 @@ const statusEl = document.getElementById("status");
 const displayBox = document.getElementById("displayBox");
 
 let locked = false;
-let currentVal = 0; // 暫存目前數值
 
 window.addEventListener("load", fetchCurrent);
 
@@ -156,68 +190,70 @@ async function fetchCurrent(){
   try{
     const res = await fetch(GAS_URL+"?action=getCount");
     const data = await res.json();
-    currentVal = data.current ?? 0;
-    statusEl.innerText = currentVal;
+    statusEl.innerText = data.current ?? 0;
   }catch{
     statusEl.innerText="❌";
   }
 }
 
 function vibrate(){
-  if(navigator.vibrate) navigator.vibrate(25); // 縮短震動時間感
+  if(navigator.vibrate){
+    navigator.vibrate(40);
+  }
 }
 
 function animate(){
-  displayBox.classList.remove("flash");
-  void displayBox.offsetWidth; // 強制重繪觸發動畫
   displayBox.classList.add("flash");
+  setTimeout(()=>displayBox.classList.remove("flash"),300);
 }
 
 async function safeSend(val){
   if(locked) return;
-  
-  let text = val>0 ? `確認 ${val} 人離園？` : `扣回 ${Math.abs(val)} 人？`;
-  if(!confirm(text)) return;
-
   locked = true;
+
+  let text = val>0
+    ? `確認 ${val} 人離園？`
+    : `扣回 ${Math.abs(val)} 人？`;
+
+  if(!confirm(text)){
+    locked=false;
+    return;
+  }
+
   vibrate();
   animate();
+  statusEl.innerText="⏳";
 
-  // --- 極速關鍵：預判更新 ---
-  // 先在畫面加減數字，不等待 API 回傳
-  currentVal += val;
-  statusEl.innerText = currentVal;
-  statusEl.style.opacity = "0.6"; // 變淡表示「同步中」
-
-  try {
-    // 使用 fetch 的並行處理，不阻塞後續動作
-    fetch(GAS_URL, {
-      method: "POST",
-      mode: "no-cors",
-      body: JSON.stringify({
-        type: "OUT",
-        delta: val,
-        source: "Turbo-Fast-v2"
+  try{
+    await fetch(GAS_URL,{
+      method:"POST",
+      mode:"no-cors",
+      body:JSON.stringify({
+        type:"OUT",
+        delta:val,
+        source:"Turbo PRO v2"
       })
-    }).then(() => {
-      statusEl.style.opacity = "1"; // 同步完成恢復亮度
-      locked = false;
     });
 
-    // 延遲一段時間重新抓取真實數據確保準確
-    setTimeout(fetchCurrent, 1500); 
+    setTimeout(fetchCurrent,800);
 
-  } catch(e) {
+  }catch{
     alert("傳送失敗");
     fetchCurrent();
-    locked = false;
   }
+
+  setTimeout(()=>locked=false,800);
 }
 
 function sendCustom(isAdd){
   const input = document.getElementById("customInput");
   let val = parseInt(input.value);
-  if(isNaN(val) || val<=0) return;
+
+  if(isNaN(val) || val<=0){
+    alert("請輸入正整數");
+    return;
+  }
+
   val = isAdd ? val : -val;
   safeSend(val);
   input.value="";
