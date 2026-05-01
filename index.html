@@ -146,7 +146,7 @@ input:focus {
 <body>
 <div class="container">
 
-<h1>🌅 後慈湖離園</h1>
+<h1>🌅 後慈湖離園系統</h1>
 
 <div class="display" id="displayBox">
   <div id="status">⏳</div>
@@ -160,16 +160,16 @@ input:focus {
 </div>
 
 <div class="row">
-  <button class="minus" onclick="safeSend(-1)">➖1（反園）</button>
-  <button class="fix" onclick="safeSend(-5)">➖5（反園）</button>
+  <button class="minus" onclick="safeSend(-1)">➖1（返回）</button>
+  <button class="fix" onclick="safeSend(-5)">➖5（返回）</button>
 </div>
 
 <!-- 安全輸入 -->
 <input id="customInput" type="number" inputmode="numeric" placeholder="輸入數量（不用打正負）">
 
 <div class="row">
-  <button class="addSmall" style="background:#3498db" onclick="sendCustom(true)">➕ 增加</button>
-  <button class="minus" style="background:#e17055" onclick="sendCustom(false)">➖ 扣回</button>
+  <button class="addSmall" style="background:#3498db" onclick="sendCustom(true)">➕ 離開</button>
+  <button class="minus" style="background:#e17055" onclick="sendCustom(false)">➖ 撤回</button>
 </div>
 
 <div class="footer">Turbo PRO v2｜防誤觸｜震動回饋｜動畫</div>
