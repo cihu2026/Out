@@ -7,121 +7,159 @@
 
 <style>
 :root {
-  --bg1: #eaf3ff;
-  --bg2: #d8eadf;
-  --card: rgba(255, 255, 255, 0.88);
-  --text: #1f2d3d;
-  --muted: #718096;
-  --green1: #22c55e;
-  --green2: #15803d;
-  --blue1: #38bdf8;
-  --blue2: #0369a1;
-  --gray1: #94a3b8;
-  --gray2: #475569;
+  --lake: #0f766e;
+  --lake-dark: #115e59;
+  --mist: #f4f8f6;
+  --water: #e0f2fe;
+  --sky: #eef6ff;
+  --text: #102a43;
+  --muted: #73808c;
+  --card: rgba(255,255,255,.82);
+  --shadow: 0 22px 55px rgba(15, 42, 67, .16);
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-  background: linear-gradient(160deg, var(--bg1) 0%, var(--bg2) 100%);
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
   color: var(--text);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255,255,255,.95), transparent 32%),
+    radial-gradient(circle at 90% 15%, rgba(186,230,253,.9), transparent 30%),
+    linear-gradient(155deg, #eef7ff 0%, #e7f4ec 48%, #dbeafe 100%);
   -webkit-tap-highlight-color: transparent;
 }
 
 .container {
   width: 100%;
-  max-width: 430px;
-  padding: 24px 20px;
-  border-radius: 30px;
+  max-width: 410px;
+  padding: 22px;
+  border-radius: 34px;
   background: var(--card);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.14);
-  border: 1px solid rgba(255,255,255,0.65);
-  text-align: center;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255,255,255,.72);
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.title-wrap { text-align: left; }
+
 h1 {
-  font-size: 24px;
-  margin: 0 0 8px 0;
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: .2px;
   font-weight: 900;
-  letter-spacing: 0.5px;
 }
 
 .subtitle {
-  margin-bottom: 16px;
+  margin-top: 5px;
   color: var(--muted);
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.badge {
+  flex: 0 0 auto;
+  padding: 8px 11px;
+  border-radius: 999px;
+  color: var(--lake-dark);
+  background: rgba(15,118,110,.1);
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .display {
-  margin: 16px 0 18px;
-  padding: 26px 18px 24px;
-  border-radius: 26px;
-  background: #fff;
+  position: relative;
+  margin: 8px 0 14px;
+  padding: 28px 18px 22px;
+  border-radius: 30px;
+  overflow: hidden;
+  text-align: center;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.86)),
+    linear-gradient(135deg, var(--water), var(--mist));
   box-shadow:
-    inset 0 2px 8px rgba(0,0,0,0.035),
-    0 12px 26px rgba(15,23,42,0.08);
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    inset 0 1px 0 rgba(255,255,255,.9),
+    0 12px 30px rgba(15,42,67,.09);
+  transition: transform .22s cubic-bezier(.2,.9,.2,1.2);
 }
 
-.display-label {
-  font-size: 17px;
-  font-weight: 900;
-  color: #334155;
-  margin-bottom: 8px;
+.display::before {
+  content: "";
+  position: absolute;
+  inset: auto -40px -70px -40px;
+  height: 130px;
+  background: radial-gradient(ellipse at center, rgba(15,118,110,.13), transparent 66%);
 }
 
 .count-line {
+  position: relative;
   display: flex;
-  justify-content: center;
   align-items: baseline;
+  justify-content: center;
   gap: 8px;
 }
 
 #status {
-  font-size: 82px;
+  font-size: 92px;
+  line-height: .95;
   font-weight: 950;
-  color: #0f172a;
-  line-height: 1;
-  letter-spacing: -2px;
+  letter-spacing: -4px;
+  color: #0b1f33;
 }
 
 .unit {
-  font-size: 24px;
+  font-size: 23px;
   font-weight: 900;
   color: #475569;
 }
 
+.display-label {
+  position: relative;
+  margin-top: 9px;
+  color: #52616f;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: .5px;
+}
+
 .updated {
-  margin-top: 12px;
-  font-size: 13px;
-  color: var(--muted);
-  font-weight: 700;
+  position: relative;
+  margin-top: 8px;
+  color: #8a96a3;
+  font-size: 12px;
+  font-weight: 650;
 }
 
 .notice {
-  min-height: 34px;
+  height: 34px;
   margin: 4px 0 12px;
-  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 999px;
-  background: rgba(34, 197, 94, 0.12);
+  font-size: 14px;
+  font-weight: 850;
   color: #166534;
-  font-size: 15px;
-  font-weight: 900;
+  background: rgba(34,197,94,.12);
   opacity: 0;
-  transform: translateY(-4px);
-  transition: all 0.2s ease;
+  transform: translateY(-6px);
+  transition: all .22s ease;
 }
 
 .notice.show {
@@ -129,170 +167,176 @@ h1 {
   transform: translateY(0);
 }
 
-.section-title {
-  margin: 16px 0 10px;
-  font-size: 15px;
-  color: #334155;
-  font-weight: 900;
-  text-align: left;
-}
-
-.row {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 12px;
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 11px;
 }
 
 button {
-  flex: 1;
-  min-height: 60px;
-  padding: 14px 8px;
-  font-size: 18px;
-  border: none;
-  border-radius: 18px;
-  font-weight: 900;
-  color: #fff;
+  border: 0;
+  min-height: 66px;
+  border-radius: 22px;
+  color: white;
   cursor: pointer;
-  transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.15s ease;
-  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.16);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  line-height: 1.25;
+  font-family: inherit;
+  font-weight: 900;
+  font-size: 24px;
+  letter-spacing: -.3px;
+  box-shadow: 0 10px 20px rgba(15,42,67,.14);
+  transition: transform .1s ease, opacity .15s ease, box-shadow .1s ease;
+}
+
+button span {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: .5px;
+  opacity: .9;
 }
 
 button:active {
-  transform: translateY(2px) scale(0.97);
-  box-shadow: 0 2px 7px rgba(15, 23, 42, 0.16);
+  transform: translateY(2px) scale(.975);
+  box-shadow: 0 5px 12px rgba(15,42,67,.12);
 }
 
 button:disabled {
-  opacity: 0.58;
+  opacity: .58;
   cursor: not-allowed;
 }
 
-.add,
-.addSmall {
-  background: linear-gradient(135deg, var(--green1), var(--green2));
+.out {
+  background: linear-gradient(135deg, #34d399, var(--lake));
 }
 
-.back,
-.backSmall {
-  background: linear-gradient(135deg, var(--blue1), var(--blue2));
+.back {
+  background: linear-gradient(135deg, #60a5fa, #2563eb);
 }
 
-.custom-box {
+.custom-card {
   margin-top: 14px;
-  padding: 16px;
-  border-radius: 22px;
-  background: rgba(255,255,255,0.72);
-  border: 1px solid rgba(148, 163, 184, 0.25);
+  padding: 14px;
+  border-radius: 26px;
+  background: rgba(255,255,255,.58);
+  border: 1px solid rgba(255,255,255,.75);
+}
+
+.custom-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: #52616f;
+  font-size: 13px;
+  font-weight: 850;
 }
 
 input {
   width: 100%;
-  margin: 2px 0 12px;
-  padding: 17px;
-  border-radius: 18px;
-  border: 2px solid #e2e8f0;
-  font-size: 22px;
+  height: 56px;
+  margin-bottom: 11px;
+  border: 1px solid rgba(148,163,184,.35);
+  border-radius: 19px;
+  outline: none;
   text-align: center;
-  background: #f8fafc;
-  color: #0f172a;
-  font-weight: 800;
-  transition: all 0.2s ease;
+  font-size: 22px;
+  font-weight: 850;
+  color: #102a43;
+  background: rgba(255,255,255,.86);
+  transition: all .2s ease;
 }
 
 input:focus {
-  outline: none;
-  border-color: #38bdf8;
+  border-color: rgba(14,165,233,.75);
+  box-shadow: 0 0 0 4px rgba(14,165,233,.12);
   background: #fff;
-  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.16);
 }
 
-.help {
-  margin: 12px 0 0;
-  padding: 12px 14px;
+.custom-actions button {
+  min-height: 54px;
+  font-size: 15px;
   border-radius: 18px;
-  background: #f8fafc;
-  color: #64748b;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.6;
-  text-align: left;
+  letter-spacing: .2px;
+}
+
+.hint {
+  margin-top: 13px;
+  color: #7c8792;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.55;
 }
 
 .footer {
-  margin-top: 16px;
-  font-size: 12px;
-  color: #94a3b8;
-  letter-spacing: 1px;
+  margin-top: 12px;
+  color: #9aa6b2;
+  text-align: center;
+  font-size: 11px;
   font-weight: 700;
+  letter-spacing: 1px;
 }
 
-.flash {
-  animation: bounce .3s ease;
-}
+.flash { animation: softPop .32s ease; }
 
-@keyframes bounce {
+@keyframes softPop {
   0% { transform: scale(1); }
-  50% { transform: scale(1.06); }
+  50% { transform: scale(1.035); }
   100% { transform: scale(1); }
 }
 
 @media (max-width: 360px) {
-  h1 { font-size: 21px; }
-  #status { font-size: 70px; }
-  button { font-size: 16px; min-height: 56px; }
+  .container { padding: 18px; }
+  h1 { font-size: 20px; }
+  #status { font-size: 80px; }
+  button { min-height: 60px; font-size: 21px; }
 }
 </style>
 </head>
 
 <body>
 <div class="container">
-
-<h1>🌅 後慈湖離園系統</h1>
-<div class="subtitle">給志工老師使用｜請依實際人數登記</div>
-
-<div class="display" id="displayBox">
-  <div class="display-label">目前已離園</div>
-  <div class="count-line">
-    <div id="status">⏳</div>
-    <div class="unit">人</div>
+  <div class="header">
+    <div class="title-wrap">
+      <h1>🌅 後慈湖離園系統</h1>
+      <div class="subtitle">離園人數即時登記</div>
+    </div>
+    <div class="badge">志工端</div>
   </div>
-  <div class="updated" id="updatedAt">最後更新：讀取中</div>
-</div>
 
-<div class="notice" id="notice">✅ 已完成</div>
-
-<div class="section-title">快速登記</div>
-<div class="row">
-  <button class="add" onclick="safeSend(5)">🟢 離園<br>5 人</button>
-  <button class="addSmall" onclick="safeSend(1)">🟢 離園<br>1 人</button>
-</div>
-
-<div class="row">
-  <button class="backSmall" onclick="safeSend(-1)">🔵 返回<br>1 人</button>
-  <button class="back" onclick="safeSend(-5)">🔵 返回<br>5 人</button>
-</div>
-
-<div class="custom-box">
-  <div class="section-title" style="margin-top:0;">特殊人數調整</div>
-  <input id="customInput" type="number" inputmode="numeric" min="1" placeholder="請輸入人數">
-  <div class="row" style="margin-bottom:0;">
-    <button class="addSmall" onclick="sendCustom(true)">🟢 登記離園</button>
-    <button class="backSmall" onclick="sendCustom(false)">🔵 登記返回</button>
+  <div class="display" id="displayBox">
+    <div class="count-line">
+      <div id="status">⏳</div>
+      <div class="unit">人</div>
+    </div>
+    <div class="display-label">目前已離園</div>
+    <div class="updated" id="updatedAt">讀取中</div>
   </div>
-</div>
 
-<div class="help">
-  ✅ 綠色＝遊客離園，會增加人數<br>
-  🔵 藍色＝遊客返回，會扣回人數<br>
-  ⚠️ 按下後會再確認一次，避免誤觸
-</div>
+  <div class="notice" id="notice">已完成</div>
 
-<div class="footer">志工友善版｜防誤觸｜震動回饋｜最後更新時間</div>
+  <div class="grid">
+    <button class="out" onclick="safeSend(5)">+5<span>離園</span></button>
+    <button class="out" onclick="safeSend(1)">+1<span>離園</span></button>
+    <button class="back" onclick="safeSend(-1)">↩︎1<span>返回</span></button>
+    <button class="back" onclick="safeSend(-5)">↩︎5<span>返回</span></button>
+  </div>
 
+  <div class="custom-card">
+    <div class="custom-head">
+      <div>特殊人數</div>
+      <div>輸入後選擇離園或返回</div>
+    </div>
+    <input id="customInput" type="number" inputmode="numeric" min="1" placeholder="輸入人數">
+    <div class="grid custom-actions">
+      <button class="out" onclick="sendCustom(true)">登記離園</button>
+      <button class="back" onclick="sendCustom(false)">登記返回</button>
+    </div>
+  </div>
+
+  <div class="hint">綠色＝離園增加｜藍色＝返回扣回｜每次送出前會再次確認</div>
+  <div class="footer">CIHU OUT SYSTEM</div>
 </div>
 
 <script>
@@ -314,11 +358,11 @@ async function fetchCurrent(){
     const res = await fetch(GAS_URL + "?action=getCount");
     const data = await res.json();
     statusEl.innerText = data.current ?? 0;
-    updatedAtEl.innerText = "最後更新：" + formatTime(new Date());
+    updatedAtEl.innerText = formatTime(new Date()) + " 更新";
   }catch{
     statusEl.innerText = "❌";
-    updatedAtEl.innerText = "最後更新：讀取失敗";
-    showNotice("⚠️ 讀取失敗，請稍後再試", false);
+    updatedAtEl.innerText = "讀取失敗";
+    showNotice("讀取失敗，請稍後再試", false);
   }
 }
 
@@ -332,26 +376,21 @@ function formatTime(date){
 }
 
 function vibrate(){
-  if(navigator.vibrate){
-    navigator.vibrate(45);
-  }
+  if(navigator.vibrate){ navigator.vibrate(45); }
 }
 
 function animate(){
   displayBox.classList.add("flash");
-  setTimeout(() => displayBox.classList.remove("flash"), 300);
+  setTimeout(() => displayBox.classList.remove("flash"), 320);
 }
 
 function showNotice(message, success = true){
   noticeEl.innerText = message;
-  noticeEl.style.background = success ? "rgba(34, 197, 94, 0.12)" : "rgba(251, 146, 60, 0.16)";
+  noticeEl.style.background = success ? "rgba(34,197,94,.12)" : "rgba(251,146,60,.16)";
   noticeEl.style.color = success ? "#166534" : "#9a3412";
   noticeEl.classList.add("show");
-
   clearTimeout(noticeTimer);
-  noticeTimer = setTimeout(() => {
-    noticeEl.classList.remove("show");
-  }, 2200);
+  noticeTimer = setTimeout(() => noticeEl.classList.remove("show"), 2200);
 }
 
 function setButtonsDisabled(disabled){
@@ -378,7 +417,7 @@ async function safeSend(val){
   vibrate();
   animate();
   statusEl.innerText = "⏳";
-  updatedAtEl.innerText = "最後更新：送出中";
+  updatedAtEl.innerText = "送出中";
 
   try{
     await fetch(GAS_URL, {
@@ -391,11 +430,11 @@ async function safeSend(val){
       })
     });
 
-    showNotice(isOut ? `✅ 已登記離園 ${count} 人` : `↩️ 已登記返回 ${count} 人`);
+    showNotice(isOut ? `✓ 已登記離園 ${count} 人` : `↩ 已登記返回 ${count} 人`);
     setTimeout(fetchCurrent, 850);
 
   }catch{
-    showNotice("⚠️ 傳送失敗，請再試一次", false);
+    showNotice("傳送失敗，請再試一次", false);
     fetchCurrent();
   }
 
@@ -420,6 +459,5 @@ function sendCustom(isAdd){
   input.value = "";
 }
 </script>
-
 </body>
 </html>
