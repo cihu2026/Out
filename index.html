@@ -19,7 +19,8 @@
 <div class="guide">主畫面看場內人數｜綠色＝出園｜藍色＝返回場內</div><div class="footer">CIHU PEOPLE CONTROL</div>
 </div>
 <script>
-const GAS_URL="https://script.google.com/macros/s/AKfycbw5VQi-dtLodRQbKTgzueGGXgMBBedA_Th93Skr_Dia3-JYbxtd00shnZ24axbznDY/exec";
+const GAS_URL =
+"https://script.google.com/macros/s/AKfycbw63eJnsg0a70IbZXBYWktt8CCDfx0mm_MAwzMRDoxKNNvcT2FTTMpJuU8f3qfqHjo/exec";
 const inside=document.getElementById("inside"),totalIn=document.getElementById("totalIn"),outCount=document.getElementById("outCount"),state=document.getElementById("state"),updated=document.getElementById("updated"),notice=document.getElementById("notice"),mainBox=document.getElementById("mainBox"),buttons=document.querySelectorAll("button");
 let locked=false,timer=null;
 document.getElementById("today").innerText=new Date().toLocaleDateString("zh-TW",{month:"numeric",day:"numeric",weekday:"short"});
