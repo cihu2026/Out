@@ -14,8 +14,8 @@
 <div class="main" id="mainBox"><div class="label">目前場內人數</div><div class="numrow"><div class="big" id="inside">--</div><div class="unit">人</div></div><div class="time" id="updated">讀取中</div></div>
 <div class="cards"><div class="card"><div class="ct">今日入園</div><div class="cv" id="totalIn">--</div></div><div class="card"><div class="ct">已出園</div><div class="cv" id="outCount">--</div></div><div class="card"><div class="ct">狀態</div><div class="cv" id="state">待命</div></div></div>
 <div class="notice" id="notice">已完成</div>
-<div class="grid"><button class="out" onclick="sendDelta(5)">+5<span>出園</span></button><button class="out" onclick="sendDelta(1)">+1<span>出園</span></button><button class="back" onclick="sendDelta(-1)">-1<span>返回場內</span></button><button class="back" onclick="sendDelta(-5)">-5<span>返回場內</span></button></div>
-<div class="panel"><div class="ph"><div>特殊人數調整</div><div>輸入後再選動作</div></div><input id="custom" type="number" inputmode="numeric" min="1" placeholder="輸入人數"><div class="grid"><button class="out" onclick="sendCustom(true)">登記離園</button><button class="back" onclick="sendCustom(false)">人數更正</button></div></div>
+<div class="grid"><button class="out" onclick="sendDelta(5)">+5<span>出園</span></button><button class="out" onclick="sendDelta(1)">+1<span>離園</span></button><button class="back" onclick="sendDelta(-1)">-1<span>返回場內</span></button><button class="back" onclick="sendDelta(-5)">-5<span>返回場內</span></button></div>
+<div class="panel"><div class="ph"><div>特殊人數調整</div><div>輸入後再選動作</div></div><input id="custom" type="number" inputmode="numeric" min="1" placeholder="輸入人數"><div class="grid"><button class="out" onclick="sendCustom(true)">離園</button><button class="back" onclick="sendCustom(false)">人數更正</button></div></div>
 <div class="guide">主畫面看場內人數｜綠色＝出園｜藍色＝返回場內</div><div class="footer">CIHU PEOPLE CONTROL</div>
 </div>
 <script>
